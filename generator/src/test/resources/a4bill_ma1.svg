@@ -250,10 +250,10 @@ d="M63.543,-59.685l3.307,0l0,-3.858l3.858,0l0,-3.307l-3.858,0l0,-3.858l-3.307,0l
 <text x="0" y="-90.065" font-size="10">9400 Rorschach</text>
 </g>
 <g transform="translate(189.921 -0)">
-<text x="0" y="-36.92" font-size="7" font-weight="bold">Ultraviolet: </text>
-<text x="38.507" y="-36.92" font-size="7">UV;UltraPay005;12345</text>
-<text x="0" y="-28.92" font-size="7" font-weight="bold">Xing Yong: </text>
-<text x="38.892" y="-28.92" font-size="7">XY;XYService;54321</text>
+<text x="0" y="-36.92" font-size="7" font-weight="bold">UV</text>
+<text x="9.723" y="-36.92" font-size="7">;UltraPay005;12345</text>
+<text x="0" y="-28.92" font-size="7" font-weight="bold">XY</text>
+<text x="9.338" y="-28.92" font-size="7">;XYService;54321</text>
 </g>
 <g transform="translate(22.677 -0)">
 <text x="0" y="-274.665" font-size="11" font-weight="bold">Receipt</text>

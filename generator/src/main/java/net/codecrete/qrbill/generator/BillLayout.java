@@ -221,11 +221,10 @@ class BillLayout {
         double maxWidth = PAYMENT_PART_WIDTH - 2 * MARGIN - additionalRightMargin;
 
         for (AlternativeScheme scheme : bill.getAlternativeSchemes()) {
-            String boldText = String.format("%s: ", scheme.getName());
-            double boldTextWidth = graphics.getTextWidth(boldText, FONT_SIZE, true);
-            graphics.putText(boldText, 0, y, FONT_SIZE, true);
+            double boldTextWidth = graphics.getTextWidth(scheme.getName(), FONT_SIZE, true);
+            graphics.putText(scheme.getName(), 0, y, FONT_SIZE, true);
 
-            String normalText = truncateText(scheme.getInstruction(), maxWidth - boldTextWidth, FONT_SIZE);
+            String normalText = truncateText(scheme.getInstructionWithoutName(), maxWidth - boldTextWidth, FONT_SIZE);
             graphics.putText(normalText, boldTextWidth, y, FONT_SIZE, false);
             y -= LINE_SPACING * PT_TO_MM;
         }

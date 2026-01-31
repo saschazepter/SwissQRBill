@@ -22,22 +22,39 @@ class AlternativeSchemeTest {
 
     @Test
     void constructorTest() {
-        AlternativeScheme scheme = new AlternativeScheme("Paymit", "PM,12341234,1241234");
+        AlternativeScheme scheme = new AlternativeScheme("Paymit/12341234/1241234");
         assertEquals("Paymit", scheme.getName());
+        assertEquals("Paymit/12341234/1241234", scheme.getInstruction());
+        assertEquals("/12341234/1241234", scheme.getInstructionWithoutName());
+    }
+
+    @Test
+    void deprecatedConstructorTest() {
+        AlternativeScheme scheme = new AlternativeScheme("Paymit", "PM,12341234,1241234");
+        assertEquals("PM", scheme.getName());
         assertEquals("PM,12341234,1241234", scheme.getInstruction());
     }
 
     @Test
+    void setInstructionTest() {
+        AlternativeScheme scheme = new AlternativeScheme();
+        scheme.setInstruction("!@#%#$%");
+        assertEquals("", scheme.getName());
+        assertEquals("!@#%#$%", scheme.getInstruction());
+        assertEquals("!@#%#$%", scheme.getInstructionWithoutName());
+    }
+
+    @Test
     void toStringTest() {
-        AlternativeScheme scheme = new AlternativeScheme("Paymit", "PM,12341234,1241234");
+        AlternativeScheme scheme = new AlternativeScheme("PM,12341234,1241234");
         String text = scheme.toString();
-        assertEquals("AlternativeScheme{name='Paymit', instruction='PM,12341234,1241234'}", text);
+        assertEquals("AlternativeScheme{instruction='PM,12341234,1241234'}", text);
     }
 
     @SuppressWarnings({"AssertBetweenInconvertibleTypes", "EqualsWithItself"})
     @Test
     void testEqualsTrivial() {
-        AlternativeScheme scheme = new AlternativeScheme("Paymit", "PM,12341234,1241234");
+        AlternativeScheme scheme = new AlternativeScheme("PM,12341234,1241234");
         assertEquals(scheme, scheme);
         assertNotEquals(null, scheme);
         assertNotEquals("xxx", scheme);
@@ -45,19 +62,19 @@ class AlternativeSchemeTest {
 
     @Test
     void testEquals() {
-        AlternativeScheme scheme1 = new AlternativeScheme("Paymit", "PM,12341234,1241234");
-        AlternativeScheme scheme2 = new AlternativeScheme("Paymit", "PM,12341234,1241234");
+        AlternativeScheme scheme1 = new AlternativeScheme("PM,12341234,1241234");
+        AlternativeScheme scheme2 = new AlternativeScheme("PM,12341234,1241234");
         assertEquals(scheme1, scheme2);
         assertEquals(scheme1, scheme2);
 
-        scheme2.setName("TWINT");
+        scheme2.setInstruction("PM,12341234,1241239");
         assertNotEquals(scheme1, scheme2);
     }
 
     @Test
     void testHashCode() {
-        AlternativeScheme scheme = new AlternativeScheme("Paymit", "PM,12341234,1241234");
-        assertEquals(1266162573, scheme.hashCode());
+        AlternativeScheme scheme = new AlternativeScheme("PM,12341234,1241234");
+        assertEquals(388185787, scheme.hashCode());
     }
 
 }

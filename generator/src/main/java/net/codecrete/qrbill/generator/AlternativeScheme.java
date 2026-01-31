@@ -9,16 +9,21 @@ package net.codecrete.qrbill.generator;
 
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
- * Alternative payment scheme instructions
+ * Alternative payment scheme instructions.
+ * <p>
+ * The first word of the instruction is used as the scheme name.
+ * </p>
  */
 public class AlternativeScheme implements Serializable {
 
     private static final long serialVersionUID = -8304082204378228870L;
 
-    /** Scheme name */
-    private String name;
+    /** Scheme name length */
+    private int nameLength;
     /** Payment instruction */
     private String instruction;
 
@@ -30,32 +35,53 @@ public class AlternativeScheme implements Serializable {
     }
 
     /**
-     * Creates an instance and sets name and instruction.
+     * Creates an instance and sets the instruction.
      *
-     * @param name        scheme name
      * @param instruction payment instruction
      */
-    public AlternativeScheme(String name, String instruction) {
-        this.name = name;
-        this.instruction = instruction;
+    public AlternativeScheme(String instruction) {
+        setInstruction(instruction);
     }
 
     /**
-     * Get the payment scheme name
+     * Creates an instance and sets the instruction.
+     * <p>
+     * The parameter name is ignored.
+     * </p>
+     *
+     * @deprecated Use {@link #AlternativeScheme(String)} instead.
+     *
+     * @param name        scheme name (ignored)
+     * @param instruction payment instruction
+     */
+    @Deprecated
+    public AlternativeScheme(String name, String instruction) {
+        this(instruction);
+    }
+
+    /**
+     * Gets the payment scheme name
      *
      * @return scheme name
      */
     public String getName() {
-        return name;
+        return instruction != null ? instruction.substring(0, nameLength) : null;
     }
 
     /**
      * Sets the payment scheme name
+     * <p>
+     * This method has no effect anymore as the scheme name
+     * is derived from the instruction.
+     * </p>
+     *
+     * @deprecated The scheme name can no longer be set. It is derived from the instruction.
      *
      * @param name scheme name
      */
+    @Deprecated
     public void setName(String name) {
-        this.name = name;
+        // not implemented anymore
     }
 
     /**
@@ -82,6 +108,23 @@ public class AlternativeScheme implements Serializable {
      */
     public void setInstruction(String instruction) {
         this.instruction = instruction;
+        this.nameLength = findSeparatorIndex(instruction);
+    }
+
+    /**
+     * Gets instruction without the leading scheme name.
+     *
+     * @return Instruction, starting at the scheme name separator
+     */
+    public String getInstructionWithoutName() {
+        return instruction.substring(nameLength);
+    }
+
+    private static final Pattern FIRST_WORD_PATTERN = Pattern.compile("^\\w+");
+
+    private static int findSeparatorIndex(String instruction) {
+        Matcher matcher = FIRST_WORD_PATTERN.matcher(instruction);
+        return matcher.find() ? matcher.end() : 0;
     }
 
     /**
@@ -92,8 +135,7 @@ public class AlternativeScheme implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AlternativeScheme that = (AlternativeScheme) o;
-        return Objects.equals(name, that.name) &&
-                Objects.equals(instruction, that.instruction);
+        return Objects.equals(instruction, that.instruction);
     }
 
     /**
@@ -102,7 +144,7 @@ public class AlternativeScheme implements Serializable {
     @Override
     public int hashCode() {
 
-        return Objects.hash(name, instruction);
+        return Objects.hash(instruction);
     }
 
     /**
@@ -111,8 +153,7 @@ public class AlternativeScheme implements Serializable {
     @Override
     public String toString() {
         return "AlternativeScheme{" +
-                "name='" + name + '\'' +
-                ", instruction='" + instruction + '\'' +
+                "instruction='" + instruction + '\'' +
                 '}';
     }
 }
